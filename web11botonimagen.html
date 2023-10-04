@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 11 boton imagen</title>
+    <style>
+        img{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cambiar imágenes</h1>
+
+    <input type="range" id="rango" min="1" value="1" max="5"/>
+    <span id="valorrango"></span>
+
+    <div id="botones"></div>
+    <hr>
+    <div id="imagenes"></div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            $("#rango").change(function(){
+
+                var numRango = parseInt($(this).val());
+
+                $("#botones").text("");
+                $("#imagenes").text("");
+
+                for (var i = 1; i <= numRango; i++){
+
+                    var boton = $("<button>", {"value": i, "text" : i});
+                    var imagen = $("<img>", {"src": "images/img1.avif", "id" : "imagen" + i});
+
+                    $("#botones").append(boton);
+                    $("#imagenes").append(imagen);
+
+                    boton.click(function(){
+
+                        var numBoton = parseInt($(this).val());
+                        console.log("numboton "+numBoton);
+                        $("#imagen" + numBoton).attr("src", "images/img3.jpg");
+
+                    })
+
+                }
+
+            })
+
+        })
+    </script>
+    
+</body>
+</html>

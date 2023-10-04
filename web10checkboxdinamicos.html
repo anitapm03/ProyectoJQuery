@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 10 generar checkbox</title>
+</head>
+<body>
+    <h1>Generar checkbox</h1>
+
+    <input type="range" id="rango" min="1" value="1" max="50"/>
+
+    <span id="valorrango"></span>
+
+    <div id="contenedor"></div>
+
+    <h1 id="suma">0</h1>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#rango").change(function(){
+                
+                var numCheckbox = parseInt($(this).val());
+
+                $("#valorrango").text(numCheckbox);
+
+                // limpiamos el contenido del parent
+                $("#contenedor").text("");
+                $("#suma").text("0");
+
+                for(var i = 1 ; i <= numCheckbox; i++){
+
+                    var num = Math.floor(Math.random() * 10);
+                    console.log(num);
+
+                    var lab = $("<label>", {"text" : num});
+                    var box = $("<input>", {"type": "checkbox", "text" : num});
+
+                    $("#contenedor").append(lab);
+                    $("#contenedor").append(box);
+
+                    box.click(function(){
+
+                        var numCheckbox = parseInt($(this).text());
+                        console.log("numboton "+numCheckbox);
+
+                        var numSuma = parseInt($("#suma").text());
+                        console.log("numsuma "+numSuma);
+                        
+                        var valor= $(this).prop("checked");
+                        console.log("valor" + valor);
+
+                        var resultado; 
+
+                        if (valor == true){
+
+                            resultado = numSuma + numCheckbox;
+                            $("#suma").text(resultado);
+
+                        } else {
+
+                            resultado = numSuma - numCheckbox;
+                            $("#suma").text(resultado);
+
+                        }
+
+                        /* 
+                        Se puede hacer lo mismo utilizando each
+                        */
+
+                    })
+
+                }
+
+            })
+
+        })
+
+    </script>
+</body>
+</html>
