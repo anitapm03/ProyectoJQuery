@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 09 bucles referencia</title>
+</head>
+<body>
+
+    <h1>Bucles de referencia</h1>
+
+    <p>Parrafo 1</p>
+    <p>Parrafo 2</p>
+    <p>Parrafo 3</p>
+    <p>Parrafo 4</p>
+    <p>Parrafo 5</p>
+    
+    <script src="js/jquery-3.7.1.min.js" ></script>
+    <script>
+
+        $(document).ready(function(){
+
+            //al pulsar el parrafo cambiamos su color
+            $("p").click(function(){
+                
+                var colores = ["blue", "red", "orange", "green", "yellow"];
+
+                //recorremos cada una de las etiquetas
+                $("p").each(function(){
+
+                    var indice = parseInt(Math.random() * colores.length);
+
+                    var color = colores[indice];
+                    
+                    $(this).css({"background-color" : color});
+                })
+                
+
+            })
+        })
+    </script>
+    
+</body>
+</html>
