@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 05 Calcular dia de nacimiento de la semana</title>
+</head>
+<body>
+    
+    <h1>Calcular dia</h1>
+
+    <label>Día</label>
+
+    <input type="text" id="dia"/> <br><br>
+
+    <label>Mes</label>
+
+    <input type="text" id="mes"/> <br><br>
+
+    <label>Año</label>
+
+    <input type="text" id="anio"/> <br><br>
+
+    <button id="calcular">Calcular!</button>
+
+    <h1 id="resultado"> </h1>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            $("#calcular").click(function(){
+
+                var dia= parseInt($("#dia").val());
+                var mes= parseInt($("#mes").val());
+                var anio= parseInt($("#anio").val());
+
+                if (mes == 1){
+                    mes = 13;
+                    anio--;
+                }else if (mes == 2){
+                    mes = 14;
+                    anio--;
+                }
+                //paso 1
+                var op1 = parseInt(((mes +1)*3)/5);
+
+                var op2 = parseInt(anio/4);
+                var op3 = parseInt(anio/100);
+                var op4 = parseInt(anio/400);
+
+                var op5 = dia + (mes * 2) + anio + op1 + op2 - op3 + op4 +2;
+
+                var op6 = parseInt( op5/7 );
+
+                var op7 = op5 - (op6 * 7);
+
+                var result;
+
+                switch (op7){
+                    case 0: 
+                    $("#resultado").text("sabado");
+                    break;
+
+                    case 1: 
+                    $("#resultado").text("domingo");
+                    break;
+
+                    case 2: 
+                    $("#resultado").text("lunes");
+                    break;
+
+                    case 3: 
+                    $("#resultado").text("martes");
+                    break;
+
+                    case 4: 
+                    $("#resultado").text("miercoles");
+                    break;
+
+                    case 5: 
+                    $("#resultado").text("jueves");
+                    break;
+
+                    case 6: 
+                    $("#resultado").text("viernes");
+                    break;
+
+                }
+
+            })
+
+
+
+        })
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 08 generar botones</title>
+</head>
+<body>
+    
+    <h1>Generar botones</h1>
+
+    <button id="generar">Generar botones!</button>
+
+    <div id="contenedor"></div>
+
+    <h1 id="suma">0</h1>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#generar").click(function(){
+
+                // limpiamos el contenido del parent
+                $("#contenedor").text("");
+
+                for (var i = 1; i <= 10; i++){
+
+                    var num = Math.floor(Math.random() * 10);
+                    console.log(num);
+
+                    var boton = $("<button>", {"value": num, "text" : num});
+
+                    $("#contenedor").append(boton);
+
+                    boton.click(function(){
+
+                        //lo que necesitamos es recuperar el numero del
+                        //boton para ponerlo en el h1
+                        var numBoton = parseInt($(this).val());
+                        console.log("numboton "+numBoton);
+
+                        //OJO! al ser un h1 en vez de funcionar con val funciona 
+                        //con text, val es para formularios 
+                        var numSuma = parseInt($("#suma").text());
+                        console.log("numsuma "+numSuma);
+
+                        var resultado = numSuma + numBoton;
+
+                        $("#suma").text(resultado);
+                        
+                    })
+
+                }
+
+            })
+
+        })
+    </script>
+</body>
+</html>
+

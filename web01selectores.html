@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 01 selectores</title>
+    <!-- control+k+c hace un comentario// control+k+u quita comentario -->
+    
+    <style>
+        .azul{
+            color:blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Selectores JQuery</h1>
+
+    <button id="button1"> Pulsame! </button>
+
+    <h1 class="azul"> Soy azul! </h1>
+
+    <button class="azul"> Botón azul! </button>
+
+    <p>Aprendiendo Jquery 1</p>
+
+    <p>Aprendiendo Jquery 2</p>
+
+    <!-- indicar la referencia a la libreria jquery, 
+    se puede poner tanto en la cabecera como en el body
+    pero si lo combinamos con boostrap lo comun es ponerlo en el body-->
+    <script src="js/jquery-3.7.1.min.js"></script>
+
+    <script>
+        //la primera instrucción es cargar los componentes al iniciar la página
+        $(document).ready(function(){
+            alert("funcionando");
+
+            //podemos realizar ciertas acciones
+
+            //ocultar elementos
+            $("h1").hide();
+            //selector id 
+            $("button1").hide();
+
+
+            //podemos asociar eventos (funciones anonimas)
+            $(".azul").click(function(){
+                //imprescindible para el desarrollo front
+                //visualizar acciones en el explorador web
+                console.log("Mostrando mensajes en web...");
+                // la consola nos muestra los errores y como se tratan los datos
+
+                $("h1").show();
+
+            })
+
+            $("p").click(function(){
+
+                //hay una palabra clave "this", la cual accede al obj que 
+                //ha realizado la llamada
+
+                //$("p").hide();
+                $(this).hide();
+
+            })
+
+        })
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 04 ordenar numeros</title>
+</head>
+<body>
+
+    <h1>Ordenar números</h1>
+
+    <label> Número 1</label>
+
+    <input type="text" id="caja1"/> <br><br>
+
+    <label> Número 2</label>
+
+    <input type="text" id="caja2"/> <br><br>
+
+    <label> Número 3</label>
+
+    <input type="text" id="caja3"/> <br><br>
+
+    <button id="ordenar">Ordenar!</button>
+
+    <h1 id="resultado"> </h1>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready( function() {
+
+            $("#ordenar").click(function() {
+                var n1= parseInt($("#caja1").val());
+                var n2= parseInt($("#caja2").val());
+                var n3= parseInt($("#caja3").val());
+
+                var mayor, menor, medio;
+                if ( n1 >= n2 && n1 >= n3){
+                    mayor = n1;
+                } else if ( n2 >= n1 && n2 >= n3){
+                    mayor = n2;
+                } else {
+                    mayor = n3;
+                }
+
+                if ( n1 <= n2 && n1 <= n3){ 
+                    menor = n1;
+                } else if (n2 <= n1 && n2 <= n3){
+                    menor = n2;
+                } else {
+                    menor = n3;
+                }
+                
+                var suma = n1 + n2 + n3;
+                medio = suma - mayor - menor;
+
+                /*
+                //var menor = n1 ;
+                //var mayor = n2 ;
+                //var medio = n3 ;
+                //var ac = 0;
+                
+                if (menor > medio){
+                    ac = menor;
+                    menor = medio;
+                    medio = ac;
+                }
+
+                if (medio > mayor){
+                    ac = medio;
+                    medio = mayor;
+                    mayor = ac;
+                }*/
+
+                $("#resultado").text("El orden es: " + mayor + medio + menor);
+            })
+
+        })
+
+
+    </script>
+    
+</body>
+</html>
