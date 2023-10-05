@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 15 filtrado notas</title>
+</head>
+<body>
+
+    <h1>Filtrar notas</h1>
+
+    <label>Introduzca la nota </label>
+    <input type="text" id="cajaNota"/> 
+    <button id="buscar">Filtrar!</button><br>
+
+    <table id="tablaResultados" border>
+        <thead>
+            <tr>
+
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Nota</th>
+
+            </tr>
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#buscar").click(function(){
+
+                var nota = parseInt($("#cajaNota").val());
+                var html = "";
+
+                $.get("documents/alumnos.xml", function(data){
+
+                    console.log("leyendo");
+                    var html = "";
+
+                    for (var i = nota; i<= 10; i++){
+                        var filtro = "nota:contains("+i+")";
+
+                        $(data).find(filtro).each(function(){
+
+                            var nodoPadre = $(this).parent();
+                            var nombre = $(nodoPadre).find("nombre").text();
+                            var apellido = $(nodoPadre).find("apellidos").text();
+                            var n = $(nodoPadre).find("nota").text();
+
+                            html += "<tr>";
+
+                            html += "<td>" + nombre + "</td>";
+                            html += "<td>" + apellido + "</td>";
+                            html += "<td>" + n + "</td>";
+
+                            html += "</tr>";
+
+                        })
+
+                        $("#tablaResultados tbody").html(html);
+                    }
+
+                })
+
+            })
+
+        })
+
+    </script>
+    
+</body>
+</html>

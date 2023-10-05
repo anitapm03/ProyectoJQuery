@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 14 filtrado xml</title>
+</head>
+<body>
+
+    <h1>Filtrado xml deptos</h1>
+
+    <label>Introduzca ID</label>
+    <input type="text" id="cajaId"/>
+    <button id="buscarId">Buscar por ID</button> <br><br>
+
+    <label>Introduzca LOCALIDAD</label>
+    <input type="text" id="cajaLoc"/>
+    <button id="buscarLoc">Buscar por LOCALIDAD</button> <br><br>
+
+    <h1 style="color:red" id="mensaje"></h1>
+
+    <ul id="listaDeptos"></ul>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#buscarId").click(function(){
+
+                var id = parseInt($("#cajaId").val());
+                var html = "";
+
+                $.get("documents/departamentos.xml", function(data){
+
+                    console.log("leyendo...");
+
+                    //necesitamos filtrar por atributo
+                    var filtro = "DEPT[DEPT_NO="+ id +"]";
+                    //como el id es unico no realizamos each
+                    var nodoDept= $(data).find(filtro).first();
+
+                    //una vez tenemos el nodo deseado extraemos la info 
+                    var nombre = $(nodoDept).find("DNOMBRE").text();
+                    var loc = $(nodoDept).find("LOC").text();
+
+                    html = "<li>" + nombre + ", " + loc + "</li>"
+
+                    $("#listaDeptos").html(html);
+                })
+
+            })
+
+            $("#buscarLoc").click(function(){
+
+                var loc =  $("#cajaLoc").val();
+
+                $("#listaDeptos").html("");
+
+                $.get("documents/departamentos.xml", function(data){
+
+                    console.log("leyendo...");
+
+                    //necesitamos filtrar por valor de etiqueta
+                    var filtro = "LOC:contains("+ loc +")";
+
+                    if($(data).find(filtro).length == 0){
+                        $("#mensaje").text("no existe ningun departamento en "+loc);
+                    } else {
+
+                        var html = "";
+
+                        //tenemos que hacer each porque la localidad se puede repetir
+                        $(data).find(filtro).each(function(){
+
+                            //como solo nos devuelve la localidad 
+                            //accedemos al nodo padre para sacar el nombre 
+                            var nodoPadre = $(this).parent();
+                            var nombre = $(nodoPadre).find("DNOMBRE").text();
+                    
+                            html += "<li>" + nombre + "</li>"
+
+                        });
+
+                        $("#listaDeptos").html(html);
+
+                    }
+
+                })
+            })
+        })
+
+    </script>
+
+</body>
+</html>

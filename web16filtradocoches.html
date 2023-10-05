@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 16 filtrado de coches</title>
+    <style>
+        img{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Filtrado de coches</h1>
+
+    <label>Seleccione la marca</label>
+    <select id="selectMarcas">
+
+        <option value="0">---</option>
+
+    </select>
+
+    <button id="filtrar">Filtrar!</button>
+
+    <br><br>
+
+    <div id="marca"></div>
+    <div id="modelo"></div>
+    <img id="imagen"></img>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            //sacamos las marcas para hacer el select
+            $.get("documents/coches.xml", function(data){
+
+                console.log("leyendo");
+
+                var html = "";
+
+                $(data).find("coche").each(function(){
+
+                    var id = $(this).attr("idcoche");
+                    var marca = $(this).find("marca").text();
+                    //console.log(id);
+
+                    html += "<option value="+ id +">" + marca + "</option>";
+                })
+
+                $("#selectMarcas").html(html);
+            })
+
+            
+
+            $("#filtrar").click(function(){
+
+                //funcion del botón con la marca seleccionada
+                $.get("documents/coches.xml", function(data){
+                    
+                    var html = "";
+
+                    var idSelect = $("#selectMarcas").val();
+                    console.log(idSelect);
+
+                    var filtro = "coche[idcoche="+ idSelect +"]";
+
+                    var coche = $(data).find(filtro);
+
+                    var marcaCoche = $(coche).find("marca").text();
+                    var modeloCoche = $(coche).find("modelo").text();
+                    var imagenCoche = $(coche).find("imagen").text();
+                    console.log(marcaCoche + " " + modeloCoche + " " + imagenCoche);
+                    
+                    $("#marca").text(marcaCoche);
+                    $("#modelo").text(modeloCoche);
+
+                    $("#imagen").attr("src", imagenCoche);
+
+
+                })
+            })
+  
+        })
+    </script>
+</body>
+</html>
