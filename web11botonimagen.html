@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <h1>Cambiar imágenes</h1>
+    <h1>Cambiar imágenes con botones dinamicos</h1>
 
     <input type="range" id="rango" min="1" value="1" max="5"/>
     <span id="valorrango"></span>
@@ -36,7 +36,7 @@
                 $("#imagenes").text("");
 
                 for (var i = 1; i <= numRango; i++){
-
+  
                     var boton = $("<button>", {"value": i, "text" : i});
                     var imagen = $("<img>", {"src": "images/img1.avif", "id" : "imagen" + i});
 
@@ -47,7 +47,7 @@
 
                         var numBoton = parseInt($(this).val());
                         console.log("numboton "+numBoton);
-                        $("#imagen" + numBoton).attr("src", "images/img3.jpg");
+                        $("#imagen" + numBoton).attr("src", "images/img4.jpg");
 
                     })
 
@@ -56,6 +56,7 @@
             })
 
         })
+        
     </script>
     
 </body>
