@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 17 datos de clientes</title>
+    <style>
+        img{
+            width: 200px;
+            height: 200px;
+        }
+        button{
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Clientes</h1>
+
+    <div id="botones"></div>
+
+    <div id="datos"></div>
+
+    <img id="foto"/>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            var html = "";
+
+            $.get("documents/clientes.xml", function(data){
+
+                console.log("leyendo datos...");
+
+                $(data).find("CLIENTE").each(function(){
+
+                    var id = $(this).attr("IDCLIENTE");
+                    var nombre = $(this).find("NOMBRE").text();
+
+                    //console.log(id + ", " + nombre);
+
+                    var boton = $("<button>", { "text": nombre, "id": id});
+
+                    $("#botones").append(boton);
+
+                    boton.click(function(){
+
+                        var nombreCliente = $(this).text();
+                        console.log(nombreCliente);
+
+                        var html = "";
+                        var imagen = "";
+
+                        //var filtro = "NOMBRE:contains("+nombreCliente+")";
+                        var filtro = "CLIENTE[IDCLIENTE="+id+"]";
+
+                        var nodoCliente = $(data).find(filtro).first();
+
+                        var direccion = $(nodoCliente).find("DIRECCION").text();
+                        var email = $(nodoCliente).find("EMAIL").text();
+                        var cp = $(nodoCliente).find("CODIGOPOSTAL").text();
+                        var web = $(nodoCliente).find("PAGINAWEB").text();
+                        var imagen = $(nodoCliente).find("IMAGENCLIENTE").text();
+
+                        html = "<h1>" + nombreCliente + "</h1><p>Direccion: "+direccion + ", "+cp+"<br>Email: "+email +"<br>Web: " +web;
+                        
+                        $("#datos").html(html);
+                        $("#foto").attr("src", imagen);
+                        
+                    })
+
+                    
+                })
+
+               
+
+                
+            })
+        })
+
+
+    </script>
+</body>
+</html>
