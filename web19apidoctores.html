@@ -15,8 +15,8 @@
     <label>Especialidad Doctor</label>
     <input type="text" id="cajaEspecialidad"/><br><br>
 
-    <!--<label>ID Doctor</label>
-    <input type="text" id="cajaIdDoctor"/><br><br>-->
+    <label>ID Doctor</label>
+    <input type="text" id="cajaIdDoctor"/><br><br>
 
     <label>ID Hospital</label>
     <input type="text" id="cajaIdHospital"/><br><br>
@@ -58,7 +58,7 @@
 
                 var apellido = $("#cajaApellido").val();
                 var especialidad = $("#cajaEspecialidad").val();
-                var idDoctor = 1;
+                var idDoctor = $("#cajaIdDoctor").val();
                 var idHospital = $("#cajaIdHospital").val();
                 var salario = $("#cajaSalario").val();
 
@@ -80,6 +80,47 @@
 
 
             $("#botonUpdate").click(function(){
+
+                var apellido = $("#cajaApellido").val();
+                var especialidad = $("#cajaEspecialidad").val();
+                var idHospital = $("#cajaIdHospital").val();
+                var salario = $("#cajaSalario").val();
+                var idDoctor = $("#cajaIdDoctor").val();
+
+                var dataXml = getDoctor(apellido, especialidad, idDoctor, idHospital, salario);
+
+                var request = "api/Doctores";
+                
+                $.ajax({
+                    url: urlDoctores + request,
+                    type: "PUT",
+                    contentType: "text/xml",
+                    data: dataXml,
+                    success: function(){
+                        console.log("Actualizado correctamente")
+                        cargarDoctores();
+                    }
+
+                })
+
+            })
+
+            $("#botonDelete").click(function(){
+
+                var id = $("#cajaIdDoctor").val();
+
+                var request = "api/Doctores/"+id;
+
+                $.ajax({
+                    url: urlDoctores + request,
+                    type: "DELETE",
+                    success: function(){
+
+                        console.log("Eliminado correctamente")
+                        cargarDoctores();
+
+                    }
+                })
 
             })
 
