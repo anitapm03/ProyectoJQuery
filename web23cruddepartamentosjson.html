@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 23 crud json deptos</title>
+</head>
+<body>
+
+    <h1>Crud deptos json </h1>
+
+    <label>Numero</label>
+    <input type="text" id="cajaId"/> <br><br>
+
+    <label>Nombre</label>
+    <input type="text" id="cajaNombre"/> <br><br>
+
+    <label>Localidad</label>
+    <input type="text" id="cajaLoc"/> <br><br>
+
+    <button id="botonInsert">Insert</button>
+    <button id="botonUpdate">Update</button>
+    <button id="botonDelete">Delete</button>
+
+    <hr>
+
+    <table id="tabla" border>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Localidad</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        var urlDeptos = "https://apicruddepartamentoscore.azurewebsites.net/";
+
+        $(document).ready(function(){
+
+            cargarDeptos();
+
+            $("#botonInsert").click(function(){
+
+                var request = "api/departamentos"
+
+                var id = parseInt($("#cajaId").val());
+                var nombre = $("#cajaNombre").val();
+                var loc = $("#cajaLoc").val();
+
+                var dataJson = getJsonDepto(id,nombre,loc);
+
+                $.ajax({
+                    "url": urlDeptos + request,
+                    "method": "POST",
+                    "contentType": "application/json",
+                    "data": dataJson,
+                    success: function(){
+
+                        console.log("Insertado!");
+                        cargarDeptos();
+
+                    }
+
+
+                })
+
+            })
+
+            $("#botonUpdate").click(function(){
+
+                var request = "api/departamentos"
+
+                var id = parseInt($("#cajaId").val());
+                var nombre = $("#cajaNombre").val();
+                var loc = $("#cajaLoc").val();
+
+                var dataJson = getJsonDepto(id,nombre,loc);
+
+                $.ajax({
+                    "url": urlDeptos + request,
+                    "method": "PUT",
+                    "contentType": "application/json",
+                    "data": dataJson,
+                    success: function(){
+
+                        console.log("Actualizado!!");
+                        cargarDeptos();
+
+                    }
+
+                })
+
+            })
+
+
+            $("#botonDelete").click(function(){
+
+                var id = $("#cajaId").val();
+                
+                var request = "api/departamentos/" + id;
+
+                $.ajax({
+                    "url": urlDeptos + request,
+                    "method": "DELETE",
+                    success: function(){
+
+                        console.log("Eliminado!!");
+                        cargarDeptos();
+
+                    }
+
+                })
+
+            })
+
+        })
+
+        function getJsonDepto(id, nombre, loc){
+
+            //debemos crear un objeto json , para ello necesitamos
+            //un obj javascript
+            var departamento = new Object();
+
+            departamento.numero = id;
+            departamento.nombre = nombre;
+            departamento.localidad = loc;
+
+            //transformamos a json
+            var dataJson = JSON.stringify(departamento);
+
+            return dataJson;
+        }
+
+        function cargarDeptos(){
+            var request = "api/departamentos"
+
+            $.getJSON(urlDeptos +  request, function(data){
+
+                var html = "";
+
+                $.each(data, function(index, departamento){
+
+                    html += "<tr>";
+
+                        html += "<td>" +  departamento.numero + "</td>";
+                        html += "<td>" +  departamento.nombre + "</td>";
+                        html += "<td>" +  departamento.localidad + "</td>";
+
+                    html += "</tr>";
+                })
+
+                $("#tabla tbody").html(html);
+            })
+        }
+    </script>
+</body>
+</html>

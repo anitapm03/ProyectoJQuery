@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 21 JSON compuesto</title>
+</head>
+<body>
+
+    <h1> Leyendo un JSON compuesto</h1>
+
+    <button id="leer">Leer JSON!</button>
+
+    <div id="capaClientes"></div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+
+            $("#leer").click(function(){
+
+                $.ajax({
+                    "url": "documents/clientes.json",
+                    "method": "GET",
+                    "dataType": "json",//al ser muy extendidio nos podriamos saltar la linea
+                    success: function(data){
+
+                        console.log("leyendo servicio");
+
+                        var html = "";
+
+                        $.each(data.clientes, function(index, cliente){
+
+                            //las propiedades son dinamicas
+                            var nombre = cliente.nombre;
+                            html += "<h1>" + nombre + "</h1>";
+                        })
+                        $("#capaClientes").html(html);
+                    }, 
+                    error: function(error){
+                        console.log("Error al leer servicio");
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

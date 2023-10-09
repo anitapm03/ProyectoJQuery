@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 24 empleados y deptos</title>
+</head>
+<body>
+
+    <h1>Deptos y empleados</h1>
+
+    <ul id="listaDeptos"></ul> <br>
+
+    <hr>
+
+    <table id="empleados" border>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Departamento</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        var urlDeptos = "https://apicruddepartamentoscore.azurewebsites.net/";
+        var urlEmpleados = "https://apiempleadosspgs.azurewebsites.net/";
+
+        $(document).ready(function(){
+            
+            cargarDeptos();
+           
+        })
+
+        function cargarDeptos(){
+            var request = "api/Departamentos"
+
+            $.getJSON(urlDeptos + request, function(data){
+                console.log("leyendo deptos");
+                var html = "";
+
+                $.each(data, function(index, departamento){
+
+                    var nombre = departamento.nombre;
+                    var nDepto = departamento.numero;
+                    console.log(nombre);
+                    
+                    var list = $("<li>", {"id": "dept"+index, "text": nombre})
+                    var enlace = $("<a>", {"id": "empleados"+index, "text": " Empleados", "href": "#", "data-ndepto": nDepto});
+                    // $("#dept"+index).append(enlace);
+                    
+
+                    $("#listaDeptos").append(list);
+                    $(list).append(enlace);
+
+                    $("#empleados"+index).click(function(){
+                        var numDepto = $("#empleados"+index).data("ndepto");
+                        console.log(numDepto);
+                        cargarEmpleados(numDepto);
+
+                    })
+                })
+
+                
+
+            })
+        }
+
+        function cargarEmpleados(numDepto){
+
+            var requestEmpleados = "api/Empleados/EmpleadosDepartamento/"+numDepto;
+
+            $.getJSON(urlEmpleados + requestEmpleados, function(data){
+
+                console.log("leyendo Empleados");
+                var html = "";
+
+                $.each(data, function(index, empleado){
+
+                    html += "<tr>";
+
+                    html += "<td>" +  empleado.idEmpleado + "</td>";
+                    html += "<td>" +  empleado.apellido + "</td>";
+                    html += "<td>" +  empleado.oficio + "</td>";
+                    html += "<td>" +  empleado.salario + "</td>";
+                    html += "<td>" +  empleado.departamento + "</td>";
+
+                    html += "</tr>";
+
+                })
+                $("#empleados tbody").html(html);
+            })
+
+        }
+
+        /*function cargarEmpleados(numDepto){
+
+            var requestEmpleados = "api/Empleados";
+
+            $.getJSON(urlEmpleados + requestEmpleados, function(data){
+
+                console.log("leyendo Empleados");
+                var html = "";
+
+                $.each(data, function(index, empleado){
+
+                    if (numDepto == empleado.departamento){
+
+                        html += "<tr>";
+
+                        html += "<td>" +  empleado.idEmpleado + "</td>";
+                        html += "<td>" +  empleado.apellido + "</td>";
+                        html += "<td>" +  empleado.oficio + "</td>";
+                        html += "<td>" +  empleado.salario + "</td>";
+                        html += "<td>" +  empleado.departamento + "</td>";
+
+                        html += "</tr>";
+
+                    }
+                    
+                })
+
+                $("#empleados tbody").html(html);
+            })
+
+
+        }*/
+    </script>
+    
+</body>
+</html>

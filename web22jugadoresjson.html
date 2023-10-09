@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 22 jugadores</title>
+
+    <style>
+        img{
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jugadores json</h1>
+
+    <select id="selectJugador"></select>
+
+    
+    <div id="datos"></div>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $.getJSON("documents/jugadores.json", function(data){
+
+                console.log("leyendo");
+
+                var html = "";
+
+                $.each(data.jugadores, function(index, jugador){
+
+                    var name = jugador.nombre;
+                    var indice = index;
+                    //console.log(indice);
+
+                    var option = $("<option >", {"text": name});
+
+                    $("#selectJugador").append(option);
+
+                })
+            })
+
+            //al seleccionar uno dibujamos los datos
+            $("#selectJugador").change(function(){
+
+                console.log("leyendo");
+
+                var info = "";
+
+                //hay una propiedad llamada selected index que devuelve el index
+                //del elemento seleccionado del select
+                var index = $(this).prop("selectedIndex");
+
+                $.ajax({
+                    "url": "documents/jugadores.json",
+                    "method": "GET",
+                    "dataType": "json",
+                    success: function(data){
+
+                        var player = data.jugadores[index];
+
+                        info = "<h1>" + player.nombre + "</h1>";
+                        info += "<h2>Posicion" + player.posicion + "</h2>";
+                        info += "<h2>Numero" + player.numero + "</h2>";
+                        info += "<h2>Edad" + player.edad + "</h2>";
+                        info += "<img src'" + player.imagen + "'/>";
+
+                        $("#datos").html(info);
+                        
+                    }
+                    })
+
+                
+            })
+
+        })
+    </script>
+</body>
+</html>

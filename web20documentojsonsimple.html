@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 20 leyendo un JSON</title>
+</head>
+<body>
+
+    <h1> Leyendo un JSON</h1>
+
+    <button id="leer">Leer JSON!</button>
+
+    <ul id="tareas"></ul>
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            $("#leer").click(function(){
+
+                $.getJSON("documents/tareas.json", function(data){
+
+                    console.log("leyendo...");
+
+                    //KEY Y VALUE SON LOS VALORES DE CADA CLAVE/VALOR
+                    var html = "";
+
+                    $.each(data, function(key, value){//esas palabras me las puedo inventar
+                        html += "<li>Key: " + key + ", Value: " + value + "</li>";
+                    })
+
+                    $("#tareas").html(html);
+                })
+            })
+        })
+    </script>
+</body>
+</html>
