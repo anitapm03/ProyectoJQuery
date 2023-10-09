@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 25 oficios de empleado</title>
+</head>
+<body>
+
+    <h1>Filtrado por oficios</h1>
+
+    <select id="oficios"></select>
+    <button id="filtrar">Filtrar!</button>
+
+    <hr>
+
+    <table id="empleados" border>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Director</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script>
+
+        var urlEmpleados ="https://apiempleadosaction.azurewebsites.net/";
+        $(document).ready(function(){
+
+            cargarOficios();
+
+            $("#filtrar").click(function(){
+
+                var oficioSelect = $("#oficios").val();
+                console.log(oficioSelect);
+                //YA TENGO EL OFICIO HAY QUE BUSCAR EMPLEADOS CON ESE OFICIO
+            })
+
+        })
+
+        function cargarOficios(){
+
+            var request = "api/Empleados";
+
+            $.getJSON(urlEmpleados+request, function(data){
+
+                console.log("leyendo datos");
+
+                $.each(data, function(index, empleado){
+
+                    var oficio = empleado.oficio;
+                    console.log(oficio);
+                    var option = $("<option>", {"text": oficio});
+                    
+                    $("#oficios").append(option);
+                })
+            })
+
+        }
+
+
+    </script>
+</body>
+</html>
