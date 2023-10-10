@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web 25 oficios de empleado</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <h1>Filtrado por oficios</h1>
+
+    <select id="oficios" class="form-control" style="width: 300px;"></select>
+    <button id="filtrar" class="btn btn-danger">Filtrar!</button><br>
+
+    <h1 class="display-6">Incrementar salario</h1>
+    <input type="text" id="incremento" class="form-control" style="width: 300px;"/>
+    <button id="incrementar" class="btn btn-success">Incrementar salarios!</button>
+
+    <hr>
+
+    <table id="empleados" class="table table-dark table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Director</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/sweetalert2.min.js"></script>
+    <script>
+
+        var urlEmpleados ="https://apiempleadosaction.azurewebsites.net/";
+        $(document).ready(function(){
+
+            cargarOficios();
+
+            $("#filtrar").click(function(){
+
+                var oficioSelect = $("#oficios").val();
+                console.log(oficioSelect);
+                
+                cargarEmpleados(oficioSelect);
+            })
+
+            $("#incrementar").click(function(){
+
+                var incremento = $("#incremento").val();
+                var oficioSelect = $("#oficios").val();
+
+                //hacer un if dependiemdo del alert
+                Swal.fire({
+                    title: '<strong>Seguro que quiere incrementar?</strong>',
+                    icon: 'info',
+                    showCloseButton: false,
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    confirmButtonText:
+                        'Seguro!',
+                    confirmButtonAriaLabel: 'Seguro!',
+                    cancelButtonText:
+                        'Mejor no',
+                    cancelButtonAriaLabel: 'Mejor no'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Hecho!')
+                        console.log("confirmado");
+                        incrementoSalario(incremento, oficioSelect);
+                    } else {
+                        Swal.fire('Operación cancelada!')
+                    }
+                })
+
+                //incrementoSalario(incremento, oficioSelect);
+
+            })
+
+        })
+        
+        function cargarEmpleados(oficio){
+
+            var request = "api/Empleados/GetEmpleadosOficio/empleadosoficio/" + oficio;
+            
+
+            $.getJSON(urlEmpleados + request, function(data){
+                console.log("buscando por oficio");
+                var html="";
+
+                $.each(data, function(index, empleado){
+
+                    html += "<tr>";
+
+                    html += "<td>" +  empleado.idEmpleado + "</td>";
+                    html += "<td>" +  empleado.apellido + "</td>";
+                    html += "<td>" +  empleado.oficio + "</td>";
+                    html += "<td>" +  empleado.salario + "</td>";
+                    html += "<td>" +  empleado.director + "</td>";
+
+                    html += "</tr>";
+                })
+
+                $("#empleados tbody").html(html);
+            })
+
+        }
+
+        function cargarOficios(){
+
+            var request = "api/Empleados/GetOficios/oficios";
+
+            $.ajax({
+                "url": urlEmpleados + request,
+                "type": "GET",
+                success: function(data){
+
+                    $.each(data, function(index, oficio){
+
+                        var option = $("<option>", {"text": oficio});
+                        $("#oficios").append(option);
+                    })
+                }
+            })
+        }
+
+        function incrementoSalario(incremento, oficio){
+
+            
+
+            var request = "api/Empleados/IncrementarSalarioOficios/" + oficio + "/" + incremento;
+
+            $.ajax({
+                "url": urlEmpleados+request,
+                "type": "PUT",
+                success: function(){
+                    console.log("datos modificados");
+                    cargarEmpleados(oficio);
+                }
+            })
+
+        }
+
+    </script>
+</body>
+</html>
