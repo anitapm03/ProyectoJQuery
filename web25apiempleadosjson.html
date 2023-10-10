@@ -12,6 +12,10 @@
     <select id="oficios"></select>
     <button id="filtrar">Filtrar!</button>
 
+    <label>Incrementar salario</label>
+    <input type="text" id="incremento"/>
+    <button id="incrementar">Incrementar salarios!</button>
+
     <hr>
 
     <table id="empleados" border>
@@ -40,12 +44,84 @@
 
                 var oficioSelect = $("#oficios").val();
                 console.log(oficioSelect);
-                //YA TENGO EL OFICIO HAY QUE BUSCAR EMPLEADOS CON ESE OFICIO
+                
+                cargarEmpleados(oficioSelect);
+            })
+
+            $("#incrementar").click(function(){
+
+                var incremento = $("#incremento").val();
+                var oficioSelect = $("#oficios").val();
+
+                incrementoSalario(incremento, oficioSelect);
+
             })
 
         })
+        
+        function cargarEmpleados(oficio){
+
+            var request = "api/Empleados/GetEmpleadosOficio/empleadosoficio/" + oficio;
+            
+
+            $.getJSON(urlEmpleados + request, function(data){
+                console.log("buscando por oficio");
+                var html="";
+
+                $.each(data, function(index, empleado){
+
+                    html += "<tr>";
+
+                    html += "<td>" +  empleado.idEmpleado + "</td>";
+                    html += "<td>" +  empleado.apellido + "</td>";
+                    html += "<td>" +  empleado.oficio + "</td>";
+                    html += "<td>" +  empleado.salario + "</td>";
+                    html += "<td>" +  empleado.director + "</td>";
+
+                    html += "</tr>";
+                })
+
+                $("#empleados tbody").html(html);
+            })
+
+        }
 
         function cargarOficios(){
+
+            var request = "api/Empleados/GetOficios/oficios";
+
+            $.ajax({
+                "url": urlEmpleados + request,
+                "type": "GET",
+                success: function(data){
+
+                    $.each(data, function(index, oficio){
+
+                        var option = $("<option>", {"text": oficio});
+                        $("#oficios").append(option);
+                    })
+                }
+            })
+        }
+
+        function incrementoSalario(incremento, oficio){
+
+            var request = "api/Empleados/IncrementarSalarioOficios/" + oficio + "/" + incremento;
+
+            $.ajax({
+                "url": urlEmpleados+request,
+                "type": "PUT",
+                success: function(){
+                    console.log("datos modificados");
+                    cargarEmpleados(oficio);
+                }
+            })
+
+        }
+
+        /*function cargarOficios(){
+
+           DESCARTADO PORQUE SE REPETIAN LOS OFICIOS
 
             var request = "api/Empleados";
 
@@ -63,7 +139,9 @@
                 })
             })
 
-        }
+        }*/
+
+
 
 
     </script>
